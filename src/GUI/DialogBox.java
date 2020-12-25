@@ -10,4 +10,11 @@ public class DialogBox {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    public static void dialogAboutInfo(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Verification");
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }

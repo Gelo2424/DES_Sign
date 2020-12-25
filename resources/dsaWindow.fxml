@@ -12,16 +12,16 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="800.0" style="-fx-background-color: #6C6C6D;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.DsaController">
     <children>
-        <Label alignment="CENTER" layoutX="57.0" layoutY="7.0" prefHeight="70.0" prefWidth="661.0" text="El Gamal" textAlignment="CENTER" textFill="WHITE">
+        <Label alignment="CENTER" layoutX="57.0" layoutY="7.0" prefHeight="70.0" prefWidth="661.0" text="DSA sign" textAlignment="CENTER" textFill="WHITE">
             <font>
                 <Font name="Courier New" size="27.0" />
             </font>
         </Label>
-        <TextField fx:id="keyGTextField" layoutX="141.0" layoutY="82.0" prefHeight="25.0" prefWidth="518.0" />
+        <TextField fx:id="keyQandGTextField" layoutX="141.0" layoutY="82.0" prefHeight="25.0" prefWidth="518.0" />
         <TextField fx:id="plaintextFileRead" layoutX="28.0" layoutY="343.0" prefHeight="25.0" prefWidth="168.0" />
-        <Button fx:id="encryptButton" layoutX="334.0" layoutY="484.0" mnemonicParsing="false" onAction="#encrypt" prefHeight="34.0" prefWidth="107.0" style="-fx-background-color: #FFA755;" text="Encrypt" />
-        <Button fx:id="decryptButton" layoutX="334.0" layoutY="526.0" mnemonicParsing="false" onAction="#decrypt" prefHeight="34.0" prefWidth="107.0" style="-fx-background-color: #FFA755;" text="Decrypt" />
-        <Label alignment="CENTER" layoutX="22.0" layoutY="83.0" prefHeight="25.0" prefWidth="121.0" text="Key public (g)" textFill="WHITE">
+        <Button fx:id="encryptButton" layoutX="334.0" layoutY="484.0" mnemonicParsing="false" onAction="#encrypt" prefHeight="34.0" prefWidth="107.0" style="-fx-background-color: #FFA755;" text="Sign" />
+        <Button fx:id="decryptButton" layoutX="334.0" layoutY="526.0" mnemonicParsing="false" onAction="#decrypt" prefHeight="34.0" prefWidth="107.0" style="-fx-background-color: #FFA755;" text="Verify" />
+        <Label alignment="CENTER" layoutX="22.0" layoutY="83.0" prefHeight="25.0" prefWidth="121.0" text="q and g" textFill="WHITE">
             <font>
                 <Font name="Courier New" size="12.0" />
             </font>
@@ -43,7 +43,7 @@
                 <Font name="Courier New" size="12.0" />
             </font>
         </Label>
-        <Label layoutX="490.0" layoutY="318.0" prefHeight="25.0" prefWidth="121.0" text="Cyphertext file:" textFill="WHITE">
+        <Label layoutX="490.0" layoutY="318.0" prefHeight="25.0" prefWidth="121.0" text="Signed file:" textFill="WHITE">
             <font>
                 <Font name="Courier New" size="12.0" />
             </font>
@@ -60,7 +60,7 @@
                 <Font name="Courier New" size="12.0" />
             </font>
         </Label>
-        <Label layoutX="490.0" layoutY="370.0" prefHeight="25.0" prefWidth="149.0" text="Cyphertext textbox:" textFill="WHITE">
+        <Label layoutX="490.0" layoutY="370.0" prefHeight="25.0" prefWidth="149.0" text="Signed textbox:" textFill="WHITE">
             <font>
                 <Font name="Courier New" size="12.0" />
             </font>
@@ -87,24 +87,24 @@
                 <Cursor fx:constant="HAND" />
             </cursor>
         </Button>
-        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="120.0" prefHeight="25.0" prefWidth="121.0" text="Key public (h)" textFill="WHITE">
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="120.0" prefHeight="25.0" prefWidth="121.0" text="Key public (y)" textFill="WHITE">
             <font>
                 <Font name="Courier New" size="12.0" />
             </font>
         </Label>
-        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="157.0" prefHeight="25.0" prefWidth="121.0" text="Key private (a)" textFill="WHITE">
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="157.0" prefHeight="25.0" prefWidth="121.0" text="Key private (x)" textFill="WHITE">
             <font>
                 <Font name="Courier New" size="12.0" />
             </font>
         </Label>
-        <Label alignment="CENTER" layoutX="22.0" layoutY="193.0" prefHeight="25.0" prefWidth="127.0" text="MOD N" textFill="WHITE">
+        <Label alignment="CENTER" layoutX="22.0" layoutY="193.0" prefHeight="25.0" prefWidth="127.0" text="MOD p" textFill="WHITE">
             <font>
                 <Font name="Courier New" size="12.0" />
             </font>
         </Label>
-        <TextField fx:id="keyHTextField" layoutX="141.0" layoutY="120.0" prefHeight="25.0" prefWidth="518.0" />
-        <TextField fx:id="keyATextField" layoutX="141.0" layoutY="157.0" prefHeight="25.0" prefWidth="518.0" />
-        <TextField fx:id="modNTextField" layoutX="141.0" layoutY="193.0" prefHeight="25.0" prefWidth="518.0" />
+        <TextField fx:id="keyYTextField" layoutX="141.0" layoutY="120.0" prefHeight="25.0" prefWidth="518.0" />
+        <TextField fx:id="keyXTextField" layoutX="141.0" layoutY="157.0" prefHeight="25.0" prefWidth="518.0" />
+        <TextField fx:id="modPTextField" layoutX="141.0" layoutY="193.0" prefHeight="25.0" prefWidth="518.0" />
         <Label alignment="CENTER" layoutX="430.0" layoutY="248.0" prefHeight="25.0" prefWidth="121.0" text="Key file:" textFill="#dadada">
             <font>
                 <Font name="Courier New" size="12.0" />

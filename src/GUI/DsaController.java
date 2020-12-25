@@ -2,19 +2,19 @@ package GUI;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import module.*;
 
 import java.io.*;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 
 public class DsaController {
 
     private final FileChooser fileChooser = new FileChooser();
-    public DSA des = new DSA();
+    public DSA dsa = new DSA();
 
     @FXML
     public void exit() {
@@ -22,10 +22,10 @@ public class DsaController {
     }
 
     @FXML//KEY
-    public TextField keyGTextField;
-    public TextField keyHTextField;
-    public TextField keyATextField;
-    public TextField modNTextField;
+    public TextField keyQandGTextField;
+    public TextField keyYTextField;
+    public TextField keyXTextField;
+    public TextField modPTextField;
     public Button generateKeyButton;
 
     public Button readKeyButton;
@@ -65,7 +65,7 @@ public class DsaController {
                 return;
             }
             String plainText = plaintextTextBox.getText();
-            // TODO
+            dsa.setPlainText(plainText.getBytes(StandardCharsets.UTF_8));
         }
         if(fileRadio.isSelected()) {
             if (plaintextFileRead.getText().isEmpty()) {
@@ -73,19 +73,32 @@ public class DsaController {
                 return;
             }
         }
-        // TODO
-//        cyphertextTextBox.setText(sb.toString());
+        BigInteger[] sign = dsa.podpisuj(dsa.getPlainText());
+        dsa.setSign(sign);
+
+        StringBuilder sb = new StringBuilder();
+        for(BigInteger bi : sign) {
+            sb.append(bi);
+            sb.append("\n");
+        }
+        cyphertextTextBox.setText(sb.toString());
     }
 
     public void decrypt() {
         if (textboxRadio.isSelected()) {
-            if (cyphertextTextBox.getText().isEmpty()) {
-                DialogBox.dialogAboutError("Plaintext can't be empty!");
+            if (cyphertextTextBox.getText().isEmpty() || plaintextTextBox.getText().isEmpty()) {
+                DialogBox.dialogAboutError("Sign and plainText can't be empty!");
                 return;
             }
-            String cypherText = cyphertextTextBox.getText();
-
-            // TODO
+            String signString = cyphertextTextBox.getText();
+            String[] temp = signString.split("\n");
+            BigInteger[] sign = new BigInteger[temp.length];
+            for(int i = 0; i < temp.length; i++) {
+                sign[i] = new BigInteger(temp[i]);
+            }
+            dsa.setSign(sign);
+            String plainText = plaintextTextBox.getText();
+            dsa.setPlainText(plainText.getBytes(StandardCharsets.UTF_8));
         }
         if(fileRadio.isSelected()) {
             if (cyphertextFileRead.getText().isEmpty()) {
@@ -93,14 +106,18 @@ public class DsaController {
                 return;
             }
         }
-        // TODO
 
-//        plaintextTextBox.setText(new String(plainText));
-
+        if(dsa.weryfikujBigInt(dsa.getPlainText(), dsa.getSign())) {
+            DialogBox.dialogAboutInfo("Podpis poprawny");
+        }
+        else {
+            DialogBox.dialogAboutInfo("Podpis niepoprawny");
+        }
     }
 
-    public void generateKey() {
-        // TODO
+    public void generateKey() throws NoSuchAlgorithmException {
+        dsa.generateKey();
+
     }
 
 
