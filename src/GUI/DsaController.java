@@ -73,7 +73,7 @@ public class DsaController {
                 return;
             }
         }
-        BigInteger[] sign = dsa.podpisuj(dsa.getPlainText());
+        BigInteger[] sign = dsa.sign(dsa.getPlainText());
         dsa.setSign(sign);
 
         StringBuilder sb = new StringBuilder();
@@ -107,7 +107,7 @@ public class DsaController {
             }
         }
 
-        if(dsa.weryfikujBigInt(dsa.getPlainText(), dsa.getSign())) {
+        if(dsa.verifyBigInt(dsa.getPlainText(), dsa.getSign())) {
             DialogBox.dialogAboutInfo("Podpis poprawny");
         }
         else {
