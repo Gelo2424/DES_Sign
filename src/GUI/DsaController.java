@@ -9,7 +9,9 @@ import module.*;
 import java.io.*;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Scanner;
 
 public class DsaController {
 
@@ -117,7 +119,13 @@ public class DsaController {
 
     public void generateKey() throws NoSuchAlgorithmException {
         dsa.generateKey();
-
+        String Q = DSA.bytesToHex(dsa.getQ().toByteArray());
+        String G = DSA.bytesToHex(dsa.getG().toByteArray());
+        String QandG = Q + G;
+        keyQandGTextField.setText(QandG);
+        keyYTextField.setText(DSA.bytesToHex(dsa.getY().toByteArray()));
+        keyXTextField.setText(DSA.bytesToHex(dsa.getX().toByteArray()));
+        modPTextField.setText(DSA.bytesToHex(dsa.getP().toByteArray()));
     }
 
 
@@ -141,51 +149,144 @@ public class DsaController {
     }
 
 
-    public void readKeyFile() {
-//        fileChooser.setTitle("Read a private Key");
-//        fileChooser.setInitialDirectory(
-//                new File(System.getProperty("user.home"))
-//        );
-//        File file = fileChooser.showOpenDialog(null);
-//        if (file == null) {
-//            return;
-//        }
-//        String keyX = null;
-//        String mod = null;
-//        try {
-//            Scanner sc = new Scanner(file);
-//            keyX = sc.nextLine();
-//            mod = sc.nextLine();
-//            sc.close();
-//        } catch (FileNotFoundException e) {e.printStackTrace();}
-//        if (keyX == null || mod == null) {
-//            DialogBox.dialogAboutError("Private key cant be null");
-//            return;
-//        }
-        // TODO
+    public void readKeyFile() throws NoSuchAlgorithmException {
+        fileChooser.setTitle("Read p, q ang g");
+        fileChooser.setInitialDirectory(
+                new File(System.getProperty("user.home"))
+        );
+        File file = fileChooser.showOpenDialog(null);
+        if (file == null) {
+            return;
+        }
+        String keyP = null;
+        String keyQ = null;
+        String keyG = null;
+        try {
+            Scanner sc = new Scanner(file);
+            keyP = sc.nextLine();
+            keyQ = sc.nextLine();
+            keyG = sc.nextLine();
+            sc.close();
+        } catch (FileNotFoundException e) {e.printStackTrace();}
+        if (keyP == null || keyQ == null || keyG == null) {
+            DialogBox.dialogAboutError("Keys cant be null");
+            return;
+        }
+
+        dsa.setP(new BigInteger(keyP));
+        dsa.setQ(new BigInteger(keyQ));
+        dsa.setG(new BigInteger(keyG));
+
+        fileChooser.setTitle("Read Y");
+        fileChooser.setInitialDirectory(
+                new File(System.getProperty("user.home"))
+        );
+        file = fileChooser.showOpenDialog(null);
+        if (file == null) {
+            return;
+        }
+        String keyY = null;
+
+        try {
+            Scanner sc = new Scanner(file);
+            keyY = sc.nextLine();
+
+            sc.close();
+        } catch (FileNotFoundException e) {e.printStackTrace();}
+        if (keyY == null) {
+            DialogBox.dialogAboutError("Keys cant be null");
+            return;
+        }
+        dsa.setY(new BigInteger(keyY));
+
+        fileChooser.setTitle("Read X");
+        fileChooser.setInitialDirectory(
+                new File(System.getProperty("user.home"))
+        );
+        file = fileChooser.showOpenDialog(null);
+        if (file == null) {
+            return;
+        }
+        String keyX = null;
+
+        try {
+            Scanner sc = new Scanner(file);
+            keyX = sc.nextLine();
+
+            sc.close();
+        } catch (FileNotFoundException e) {e.printStackTrace();}
+        if (keyX == null) {
+            DialogBox.dialogAboutError("Keys cant be null");
+            return;
+        }
+        dsa.setX(new BigInteger(keyX));
+
+        keyQandGTextField.setText(keyQ + keyG);
+        modPTextField.setText(keyP);
+        keyYTextField.setText(keyY);
+        keyXTextField.setText(keyX);
+
+        dsa.setDigest(MessageDigest.getInstance("SHA-256"));
+
     }
 
     public void writeKeyFile() {
-//        fileChooser.setTitle("Write a private Key");
-//        fileChooser.setInitialDirectory(
-//                new File(System.getProperty("user.home"))
-//        );
-//        File file = fileChooser.showSaveDialog(null);
-//        if (file == null) {
-//            return;
-//        }
-//        try{
-//            BufferedWriter out = new BufferedWriter(new FileWriter(file.toString()));
-//            String keyA = elGamal.getX().toString();
-//            String mod = elGamal.getP().toString();
-//            out.write(keyA);
-//            out.append('\n');
-//            out.append(mod);
-//            out.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        fileChooser.setTitle("Write p, q ang g");
+        fileChooser.setInitialDirectory(
+                new File(System.getProperty("user.home"))
+        );
+        File file = fileChooser.showSaveDialog(null);
+        if (file == null) {
+            return;
+        }
+        try{
+            BufferedWriter out = new BufferedWriter(new FileWriter(file.toString()));
+            String keyP = dsa.getP().toString();
+            String keyQ = dsa.getQ().toString();
+            String keyG = dsa.getG().toString();
+            out.write(keyP);
+            out.append('\n');
+            out.append(keyQ);
+            out.append('\n');
+            out.append(keyG);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        fileChooser.setTitle("Write public key Y");
+        fileChooser.setInitialDirectory(
+                new File(System.getProperty("user.home"))
+        );
+        file = fileChooser.showSaveDialog(null);
+        if (file == null) {
+            return;
+        }
+        try{
+            BufferedWriter out = new BufferedWriter(new FileWriter(file.toString()));
+            String keyY = dsa.getY().toString();
 
+            out.write(keyY);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        fileChooser.setTitle("Write private key X");
+        fileChooser.setInitialDirectory(
+                new File(System.getProperty("user.home"))
+        );
+        file = fileChooser.showSaveDialog(null);
+        if (file == null) {
+            return;
+        }
+        try{
+            BufferedWriter out = new BufferedWriter(new FileWriter(file.toString()));
+            String keyX = dsa.getX().toString();
+
+            out.write(keyX);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //czytanie z pliku
@@ -209,9 +310,9 @@ public class DsaController {
             return;
         }
 
-//        elGamal.setPlainTextByte(bytes);
-//        plaintextFileRead.setText(file.toString());
-//        plaintextTextBox.setText(new String(bytes, StandardCharsets.ISO_8859_1));
+        dsa.setPlainText(bytes);
+        plaintextFileRead.setText(file.toString());
+        plaintextTextBox.setText(new String(bytes, StandardCharsets.ISO_8859_1));
     }
 
 
@@ -229,51 +330,51 @@ public class DsaController {
             in.close();
         } catch (IOException e) {e.printStackTrace();}
 
-//        assert sb != null;
-//        String[] rows = sb.toString().split("\n");
-//        BigInteger[] cipher = new BigInteger[rows.length];
-//        for(int i = 0; i < rows.length; i++) {
-//            cipher[i] = new BigInteger(rows[i]);
-//        }
-//
-//        elGamal.setCypherText(cipher);
-//        cyphertextFileRead.setText(file.toString());
-//        cyphertextTextBox.setText(sb.toString());
+        assert sb != null;
+        String[] rows = sb.toString().split("\n");
+        BigInteger[] cipher = new BigInteger[rows.length];
+        for(int i = 0; i < rows.length; i++) {
+            cipher[i] = new BigInteger(rows[i]);
+        }
+
+        dsa.setSign(cipher);
+        cyphertextFileRead.setText(file.toString());
+        cyphertextTextBox.setText(sb.toString());
 
     }
 
     public void writePlainText() {
-//        byte[] dane = elGamal.getPlainTextByte();
-//        File file = configureWriteFileChooser(fileChooser);
-//        if (file == null) {
-//            return;
-//        }
-//        try {
-//            FileOutputStream out = new FileOutputStream(file);
-//            out.write(dane);
-//            out.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        plaintextFileWrite.setText(file.toString());
+        byte[] dane = dsa.getPlainText();
+        File file = configureWriteFileChooser(fileChooser);
+        if (file == null) {
+            return;
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            out.write(dane);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        plaintextFileWrite.setText(file.toString());
     }
 
 
     public void writeCypherText() {
-//        BigInteger[] dane = elGamal.getCypherText();
-//        File file = configureWriteFileChooser(fileChooser);
-//        if (file == null) {
-//            return;
-//        }
-//        try {
-//            BufferedWriter out = new BufferedWriter(new FileWriter(file.toString(), StandardCharsets.ISO_8859_1));
-//            for(int i = 0; i < dane.length; i++){
-//                out.write(dane[i].toString());
-//                out.write("\n");
-//            }
-//            out.close();
-//        } catch (IOException e) {e.printStackTrace();}
-//        cyphertextFileWrite.setText(file.toString());
+        BigInteger[] dane = dsa.getSign();
+        File file = configureWriteFileChooser(fileChooser);
+        if (file == null) {
+            return;
+        }
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter(file.toString(), StandardCharsets.ISO_8859_1));
+            for(int i = 0; i < dane.length; i++){
+                out.write(dane[i].toString());
+                out.write("\n");
+            }
+            out.close();
+        } catch (IOException e) {e.printStackTrace();}
+        cyphertextFileWrite.setText(file.toString());
     }
 
 }

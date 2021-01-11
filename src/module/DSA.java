@@ -16,13 +16,14 @@ public class DSA
     BigInteger p,q,g; // PUBLIC KEYS
     BigInteger x; // PRIVATE KEY
     BigInteger y; // PUBLIC KEY
+
     BigInteger k,r,s,w,u1,u2,v,pm1,km1;
     MessageDigest digest;
 
     public void generateKey() throws NoSuchAlgorithmException {
         // p,q,g - PUBLIC KEYS
         //keyLen (512-1024 / multiple of 64)
-//        int keyLen = 512 + (random.nextInt(10)- 1) * 64;
+        //int keyLen = 512 + (random.nextInt(10)- 1) * 64;
         int keyLen = 512;
         q = BigInteger.probablePrime(160,new Random());
         BigInteger pom1, pom2;
@@ -109,7 +110,6 @@ public class DSA
         return hexText.toString();
     }
 
-    //konwertuje ciąg znaków w systemie heksadecymalnym na tablicę bajtów
     public static byte[] hexToBytes(String tekst)
     {
         if (tekst == null) {
@@ -146,5 +146,53 @@ public class DSA
 
     public void setPlainText(byte[] plainText) {
         this.plainText = plainText;
+    }
+
+    public BigInteger getP() {
+        return p;
+    }
+
+    public void setP(BigInteger p) {
+        this.p = p;
+    }
+
+    public BigInteger getQ() {
+        return q;
+    }
+
+    public void setQ(BigInteger q) {
+        this.q = q;
+    }
+
+    public BigInteger getG() {
+        return g;
+    }
+
+    public void setG(BigInteger g) {
+        this.g = g;
+    }
+
+    public BigInteger getX() {
+        return x;
+    }
+
+    public void setX(BigInteger x) {
+        this.x = x;
+    }
+
+    public BigInteger getY() {
+        return y;
+    }
+
+    public void setY(BigInteger y) {
+        this.y = y;
+    }
+
+    public MessageDigest getDigest() {
+        return digest;
+    }
+
+    public void setDigest(MessageDigest digest) {
+        this.digest = digest;
     }
 }
